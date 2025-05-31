@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Layout from '../../components/Layout';
@@ -15,7 +16,7 @@ import { supabase } from '@/integrations/supabase/client';
 interface Video {
   id: string;
   title: string;
-  youtube_id: string;
+  youtube_url: string;
   duration: string;
   order_index: number;
 }
@@ -34,7 +35,6 @@ interface Course {
   description: string;
   instructor: string;
   difficulty: string;
-
   duration: string;
   thumbnail: string;
   category: string;
@@ -123,7 +123,7 @@ const AdminCourseEditor = () => {
         videos: videosData.filter(video => video.module_id === module.id).map(video => ({
           id: video.id,
           title: video.title,
-          youtube_id: video.youtube_url,
+          youtube_url: video.youtube_url,
           duration: video.duration,
           order_index: video.order_index
         }))
@@ -182,7 +182,7 @@ const AdminCourseEditor = () => {
     const newVideo: Video = {
       id: `temp-${Date.now()}`,
       title: '',
-      youtube_id: '',
+      youtube_url: '',
       duration: '',
       order_index: 0
     };
@@ -249,7 +249,6 @@ const AdminCourseEditor = () => {
         description: course.description,
         instructor: course.instructor,
         difficulty: course.difficulty,
-    
         duration: course.duration,
         thumbnail: course.thumbnail || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop',
         category: course.category,
@@ -335,7 +334,7 @@ const AdminCourseEditor = () => {
               .insert([{
                 module_id: moduleId,
                 title: video.title,
-                youtube_url: video.youtube_id,
+                youtube_url: video.youtube_url,
                 duration: video.duration,
                 order_index: video.order_index
               }]);
@@ -344,7 +343,7 @@ const AdminCourseEditor = () => {
               .from('module_videos')
               .update({
                 title: video.title,
-                youtube_url: video.youtube_id,
+                youtube_url: video.youtube_url,
                 duration: video.duration,
                 order_index: video.order_index
               })
@@ -607,11 +606,11 @@ const AdminCourseEditor = () => {
                                       />
                                     </div>
                                     <div>
-                                      <Label className="text-slate-700">YouTube ID</Label>
+                                      <Label className="text-slate-700">YouTube URL</Label>
                                       <Input
-                                        value={video.youtube_id}
-                                        onChange={(e) => updateVideo(module.id, video.id, 'youtube_id', e.target.value)}
-                                        placeholder="YouTube video ID"
+                                        value={video.youtube_url}
+                                        onChange={(e) => updateVideo(module.id, video.id, 'youtube_url', e.target.value)}
+                                        placeholder="YouTube video URL"
                                         className="border-slate-300 focus:border-blue-500"
                                       />
                                     </div>
